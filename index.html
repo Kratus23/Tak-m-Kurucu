@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Takım Kurucu</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      text-align: center;
+      padding: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    textarea {
+      width: 90%;
+      height: 150px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .team {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #teamA {
+      background-color: #d1e7dd;
+    }
+    #teamB {
+      background-color: #f8d7da;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #444;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h2>⚽ Takım Kurucu</h2>
+  <textarea id="names" placeholder="İsimleri alt alta yaz..."></textarea><br>
+  <button onclick="createTeams()">Takımı Kur</button>
+  <button onclick="shuffleTeams()">Karıştır</button>
+
+  <div id="message"></div>
+  <div class="team" id="teamA"></div>
+  <div class="team" id="teamB"></div>
+
+  <script>
+    let currentNames = [];
+
+    const messages = [
+      "Takımlar kuruldu, şimdi sahaya çıkma zamanı!",
+      "Karıştı, bakalım bu sefer kim kazanacak?",
+      "Yeni kadro hazır, taktikler değişti!",
+      "Şans faktörü devrede, iyi olan kazansın!",
+      "Bu sefer dengeli gibi duruyor...",
+      "Kaptanlar belli oldu, oyun başlasın!",
+      "Karıştırdık, şimdi daha adil!",
+      "Yeni eşleşme geldi, sürprizlere açık!",
+      "Takımlar değişti, hava değişti!",
+      "Hazır mısınız? Bu sefer farklı olacak!"
+    ];
+
+    function showRandomMessage() {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById("message").innerText = msg;
+    }
+
+    function createTeams() {
+      const raw = document.getElementById("names").value.trim();
+      currentNames = raw.split("\n").filter(n => n.trim() !== "");
+      shuffleArray(currentNames);
+      assignTeams();
+      showRandomMessage();
+    }
+
+    function shuffleTeams() {
+      shuffleArray(currentNames);
+      assignTeams();
+      showRandomMessage();
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function assignTeams() {
+      const total = currentNames.length;
+      const split = Math.floor(total / 2);
+      const offset = Math.random() < 0.5 ? 0 : 1;
+      const teamA = currentNames.slice(0, split + offset);
+      const teamB = currentNames.slice(split + offset);
+
+      document.getElementById("teamA").innerHTML = `<h3>🟢 Takım A</h3><ul>${teamA.map(n => `<li>${n}</li>`).join("")}</ul>`;
+      document.getElementById("teamB").innerHTML = `<h3>🔴 Takım B</h3><ul>${teamB.map(n => `<li>${n}</li>`).join("")}</ul>`;
+    }
+  </script>
+</body>
+</html>
